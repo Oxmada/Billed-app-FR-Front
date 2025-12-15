@@ -19,21 +19,14 @@ export default class NewBill {
 
     new Logout({ document, localStorage, onNavigate })
   }
-
+ 
   handleChangeFile = (e) => {
     e.preventDefault()
 
     const fileInput = this.document.querySelector(`input[data-testid="file"]`)
     const file = fileInput.files[0]
     if (!file) return
-
-    const allowedExtensions = ["image/png", "image/jpg", "image/jpeg"]
-    if (!allowedExtensions.includes(file.type)) {
-      alert("Seuls les fichiers PNG, JPG et JPEG sont acceptés.")
-      fileInput.value = ""
-      return
-    }
-
+    if (!checkFileType) return 
     const fileName = file.name
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
@@ -91,6 +84,15 @@ export default class NewBill {
         })
         .catch((error) => console.error(error))
     }
+  }
+}
+export const checkFileType = (file) => {
+   const allowedExtensions = ["image/png", "image/jpg", "image/jpeg"]
+   if (!allowedExtensions.includes(file.type)) {
+     alert("Type de fichier non pris en charge")
+     return false
+   } else {
+    return true
   }
 }
 
