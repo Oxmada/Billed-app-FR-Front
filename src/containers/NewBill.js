@@ -26,7 +26,11 @@ export default class NewBill {
     const fileInput = this.document.querySelector(`input[data-testid="file"]`)
     const file = fileInput.files[0]
     if (!file) return
-    if (!checkFileType) return 
+    if (!checkFileType(file)) {
+    fileInput.value = ""
+    return
+  }
+  
     const fileName = file.name
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
@@ -85,7 +89,9 @@ export default class NewBill {
         .catch((error) => console.error(error))
     }
   }
+  
 }
+
 export const checkFileType = (file) => {
    const allowedExtensions = ["image/png", "image/jpg", "image/jpeg"]
    if (!allowedExtensions.includes(file.type)) {
